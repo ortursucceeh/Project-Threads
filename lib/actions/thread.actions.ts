@@ -87,20 +87,20 @@ export async function fetchThreadById(id: string) {
         select: "_id id name image",
       })
       .populate({
-        path: "children",
+        path: "children", // Populate the children field
         populate: [
           {
-            path: "author",
+            path: "author", // Populate the author field within children
             model: User,
-            select: "_id id name parentId image",
+            select: "_id id name parentId image", // Select only _id and username fields of the author
           },
           {
-            path: "сhildren",
-            model: Thread,
+            path: "children", // Populate the children field within children
+            model: Thread, // The model of the nested children (assuming it's the same "Thread" model)
             populate: {
-              path: "author",
+              path: "author", // Populate the author field within nested children
               model: User,
-              select: "_id id name parentId image",
+              select: "_id id name parentId image", // Select only _id and username fields of the author
             },
           },
         ],
@@ -110,5 +110,38 @@ export async function fetchThreadById(id: string) {
     return thread;
   } catch (error: any) {
     throw new Error(`Error fetching the theread: ${error.message}`);
+  }
+}
+
+export async function addCommentToThread(
+  threadId: string,
+  commentText: string,
+  userId: string,
+  path: string
+) {
+  connectToDB();
+
+  try {
+    const originalThread = await Thread.findById(threadId);
+
+    if (!originalThread) {
+      throw new Error("Thread not found");
+    }
+
+    const commentThread = new Thread({
+      text: commentText,
+      author: userId,
+      parentId: threadId,
+    });
+
+    const savedCommentThread = await commentThread.save();
+
+    originalThread.children.push(savedCommentThread._id);
+
+    await originalThread.save();
+
+    revalidatePath(path);
+  } catch (error: any) {
+    throw new Error(`Error adding comment to thread: ${error.message}`);
   }
 }
