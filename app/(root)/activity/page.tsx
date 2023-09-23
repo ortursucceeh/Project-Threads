@@ -1,7 +1,50 @@
+import { fetchUser, fetchUsers, getActivity } from "@/lib/actions/user.actions";
+import { currentUser } from "@clerk/nextjs";
+import Image from "next/image";
+import Link from "next/link";
+import { redirect } from "next/navigation";
+
 const Page = async () => {
+  const user = await currentUser();
+
+  if (!user) return null;
+
+  const userInfo = await fetchUser(user.id);
+
+  if (!userInfo.onboarded) redirect("/onboarding");
+
+  // getActivity
+  const activity = await getActivity(userInfo._id);
+
   return (
     <section>
       <h1 className="mb-10 head-text">Activity</h1>
+      <section className="flex flex-col gap-5 mt-10">
+        {activity.length ? (
+          <>
+            {activity.map((act) => (
+              <Link key={act._id} href={`/thread/${act.parentId}`}>
+                <article className="activity-card">
+                  <Image
+                    src={act.author.image}
+                    alt="Profile picture"
+                    width={20}
+                    height={20}
+                    className="object-contain rounded-full"
+                  />
+
+                  <p className="!text-small-regular text-light-1">
+                    <span className="mr-1 text-">{act.author.name}</span>
+                    replied to your thread!
+                  </p>
+                </article>
+              </Link>
+            ))}
+          </>
+        ) : (
+          <p className="!text-base-regular text-light-3">No activity yet</p>
+        )}
+      </section>
     </section>
   );
 };

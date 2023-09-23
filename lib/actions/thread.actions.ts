@@ -64,15 +64,15 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
       },
     });
 
-  // const totalThreadCount = await Thread.countDocuments({
-  //   parentId: { $in: [null, undefined] },
-  // });
+  const totalThreadCount = await Thread.countDocuments({
+    parentId: { $in: [null, undefined] },
+  });
 
   const threads = await threadsQuery.exec();
 
-  // const isNext = totalThreadCount > skipAmount + threads.length;
+  const isNext = totalThreadCount > skipAmount + threads.length;
 
-  return { threads }; // isNext
+  return { threads, isNext };
 }
 
 export async function fetchThreadById(id: string) {
