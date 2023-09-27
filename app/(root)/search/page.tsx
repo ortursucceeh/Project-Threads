@@ -1,13 +1,14 @@
 import UserCard from "@/components/cards/UserCard";
-import ProfileHeader from "@/components/shared/ProfileHeader";
-import ThreadsTab from "@/components/shared/ThreadsTab";
-import { profileTabs } from "@/constants";
+import Search from "@/components/forms/Search";
 import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 
-const Page = async () => {
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
   const user = await currentUser();
 
   if (!user) return null;
@@ -16,16 +17,19 @@ const Page = async () => {
 
   if (!userInfo.onboarded) redirect("/onboarding");
 
+  const search = (searchParams.search || "") as string;
+
   const result = await fetchUsers({
     userId: user.id,
-    searchString: "",
+    searchString: search,
     pageNumber: 1,
     pageSize: 20,
   });
 
   return (
     <section>
-      <h1 className="mb-10 head-text">Search</h1>
+      <h1 className="mb-10 head-text">Users</h1>
+      <Search placeholder="Search for users" search={search} />
 
       <div className="flex flex-col mt-14 gap-9">
         {result.users.length === 0 ? (

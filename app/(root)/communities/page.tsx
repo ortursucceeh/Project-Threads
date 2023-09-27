@@ -1,15 +1,15 @@
 import CommunityCard from "@/components/cards/CommunityCard";
-import UserCard from "@/components/cards/UserCard";
-import ProfileHeader from "@/components/shared/ProfileHeader";
-import ThreadsTab from "@/components/shared/ThreadsTab";
-import { profileTabs } from "@/constants";
+import Search from "@/components/forms/Search";
 import { fetchCommunities } from "@/lib/actions/community.actions";
-import { fetchUser, fetchUsers } from "@/lib/actions/user.actions";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
-import Image from "next/image";
 import { redirect } from "next/navigation";
 
-const Page = async () => {
+const Page = async ({
+  searchParams,
+}: {
+  searchParams: { [key: string]: string | string[] | undefined };
+}) => {
   const user = await currentUser();
 
   if (!user) return null;
@@ -17,16 +17,18 @@ const Page = async () => {
   const userInfo = await fetchUser(user.id);
 
   if (!userInfo.onboarded) redirect("/onboarding");
+  const search = (searchParams.search || "") as string;
 
   const result = await fetchCommunities({
-    searchString: "",
+    searchString: search,
     pageNumber: 1,
     pageSize: 20,
   });
 
   return (
     <section>
-      <h1 className="mb-10 head-text">Search</h1>
+      <h1 className="mb-10 head-text">Communities</h1>
+      <Search placeholder="Search for communities" search={search} />
 
       <div className="flex flex-wrap mt-14 gap-9">
         {result.communities.length === 0 ? (

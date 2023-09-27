@@ -20,8 +20,6 @@ interface Props {
 
 const ThreadCard = ({
   id,
-  currentUserId,
-  parentId,
   content,
   author,
   community,
@@ -32,7 +30,7 @@ const ThreadCard = ({
   console.log("comments :>> ", comments);
   return (
     <article
-      className={`flex flex-col w-full rounded-xl  ${
+      className={`flex flex-col w-full rounded-xl ${
         isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7 "
       }`}
     >
