@@ -28,7 +28,7 @@ const Page = async () => {
     <section>
       <h1 className="mb-10 head-text">Search</h1>
 
-      <div className="flex flex-col mt-14 gap-9">
+      <div className="flex flex-wrap mt-14 gap-9">
         {result.communities.length === 0 ? (
           <p className="no-result"></p>
         ) : (

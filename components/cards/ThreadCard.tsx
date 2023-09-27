@@ -29,6 +29,7 @@ const ThreadCard = ({
   comments,
   isComment,
 }: Props) => {
+  console.log("comments :>> ", comments);
   return (
     <article
       className={`flex flex-col w-full rounded-xl  ${
@@ -50,16 +51,40 @@ const ThreadCard = ({
           </div>
 
           <div className="flex flex-col w-full">
-            <Link href={`/profile/${author.id}`} className="w-fit">
-              <h4 className="cursor-pointer text-base-semibold text-light-1">
-                {author.name}
-              </h4>
-            </Link>
+            <div className="flex items-center justify-between">
+              <Link href={`/profile/${author.id}`} className="w-fit">
+                <h4 className="cursor-pointer text-base-semibold text-light-1">
+                  {author.name}
+                </h4>
+              </Link>
 
-            <p className="mt-2 text-small-regular text-light-2">{content}</p>
+              {!isComment && community && (
+                <div className="flex justify-between">
+                  <Link
+                    href={`/communities/${community.id}`}
+                    className="flex items-center text-gray-1"
+                  >
+                    {community.name}
+                    <Image
+                      src={community.image}
+                      alt={community.name}
+                      width={14}
+                      height={14}
+                      className="object-cover ml-1 rounded-full"
+                    />
+                  </Link>
+                </div>
+              )}
+
+              <p className="text-subtle-medium text-gray-1">
+                {formatDateString(createdAt)}
+              </p>
+            </div>
+
+            <p className="mt-3 text-small-regular text-light-2">{content}</p>
 
             <div className={`flex flex-col gap-3 mt-5 ${isComment && "mb-10"}`}>
-              <div className="flex gap-3.5">
+              <div className="flex gap-3.5 ">
                 <Image
                   src="/assets/heart-gray.svg"
                   alt="heaer"
@@ -91,37 +116,29 @@ const ThreadCard = ({
                   className="object-contain cursor-pointer"
                 />
               </div>
-
-              {isComment && comments.length > 0 && (
-                <Link href={`/thread/${id}`}>
-                  <p className="mt-1 text-subtle-medium text-gray-1">
-                    {comments.length}
-                  </p>
-                </Link>
-              )}
             </div>
           </div>
         </div>
 
         {/* TODO: delete thread*/}
-        {/* TODO: show comments logos*/}
       </div>
-      {!isComment && community && (
-        <Link
-          href={`/communities/${community.id}`}
-          className="flex items-center mt-5"
-        >
-          <p className="text-subtle-medium text-gray-1">
-            {formatDateString(createdAt)} - {community.name}
-          </p>
 
-          <Image
-            src={community.image}
-            alt={community.name}
-            width={14}
-            height={14}
-            className="object-cover ml-1 rounded-full"
-          />
+      {!isComment && comments.length > 0 && (
+        <Link href={`/thread/${id}`} className="flex items-center mt-3">
+          {comments.slice(0, 3).map((comment, indx) => (
+            <Image
+              key={indx}
+              src={comment.author.image}
+              alt={`user_${indx}`}
+              width={26}
+              height={26}
+              className={`${indx !== 0 && "-ml-3"} rounded-full object-cover`}
+            />
+          ))}
+
+          <p className="ml-2 text-gray-1 text-small-medium">
+            {comments.length} replies
+          </p>
         </Link>
       )}
     </article>
