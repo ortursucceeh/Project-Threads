@@ -16,7 +16,7 @@ const UserCard = ({ id, name, username, image, personType }: Props) => {
   const router = useRouter();
 
   return (
-    <article className="user-card">
+    <article className="user-card ">
       <div className="user-card_avatar">
         <Image
           src={image}
@@ -28,7 +28,7 @@ const UserCard = ({ id, name, username, image, personType }: Props) => {
 
         <div className="flex-1 text-ellipsis">
           <h4 className="text-base-semibold text-light-1">{name}</h4>
-          <p className="text-small-medium text-grey-1">@{username}</p>
+          <p className="text-small-medium text-gray-1">@{username}</p>
         </div>
 
         <Button
