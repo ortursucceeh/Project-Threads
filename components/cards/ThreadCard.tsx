@@ -1,6 +1,8 @@
+import { deleteThread } from "@/lib/actions/thread.actions";
 import { formatDateString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
+import DeleteButton from "../ui/delete";
 
 interface Props {
   id: string;
@@ -16,21 +18,24 @@ interface Props {
   createdAt: string;
   comments: { author: { image: string } }[];
   isComment?: boolean;
+  canDelete?: boolean;
 }
 
 const ThreadCard = ({
   id,
+  currentUserId,
+  parentId,
   content,
   author,
   community,
   createdAt,
   comments,
   isComment,
+  canDelete,
 }: Props) => {
-  console.log("comments :>> ", comments);
   return (
     <article
-      className={`flex flex-col w-full rounded-xl ${
+      className={`flex flex-col w-full rounded-xl relative ${
         isComment ? "px-0 xs:px-7" : "bg-dark-2 p-7 "
       }`}
     >
@@ -56,27 +61,29 @@ const ThreadCard = ({
                 </h4>
               </Link>
 
-              {!isComment && community && (
-                <div className="flex justify-between">
-                  <Link
-                    href={`/communities/${community.id}`}
-                    className="flex items-center text-gray-1"
-                  >
-                    {community.name}
-                    <Image
-                      src={community.image}
-                      alt={community.name}
-                      width={14}
-                      height={14}
-                      className="object-cover ml-1 rounded-full"
-                    />
-                  </Link>
-                </div>
-              )}
+              <div className="absolute flex items-center gap-4 sm:right-4 sm:bottom-4 right-2 bottom-2">
+                {!isComment && community && (
+                  <div className="flex justify-between">
+                    <Link
+                      href={`/communities/${community.id}`}
+                      className="flex items-center text-gray-1 text-small-semibold "
+                    >
+                      {community.name}
+                      <Image
+                        src={community.image}
+                        alt={community.name}
+                        width={14}
+                        height={14}
+                        className="object-cover ml-1 rounded-full"
+                      />
+                    </Link>
+                  </div>
+                )}
 
-              <p className="text-subtle-medium text-gray-1">
-                {formatDateString(createdAt)}
-              </p>
+                <p className="text-subtle-medium text-gray-1">
+                  {formatDateString(createdAt)}
+                </p>
+              </div>
             </div>
 
             <p className="mt-3 text-small-regular text-light-2">{content}</p>
@@ -118,7 +125,7 @@ const ThreadCard = ({
           </div>
         </div>
 
-        {/* TODO: delete thread*/}
+        {canDelete && <DeleteButton id={id} />}
       </div>
 
       {!isComment && comments.length > 0 && (

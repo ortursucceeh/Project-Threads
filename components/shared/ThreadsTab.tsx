@@ -1,7 +1,8 @@
-import { fetchUserPosts } from "@/lib/actions/user.actions";
+import { fetchUser, fetchUserPosts } from "@/lib/actions/user.actions";
 import ThreadCard from "../cards/ThreadCard";
 import { redirect } from "next/navigation";
 import { fetchCommunityPosts } from "@/lib/actions/community.actions";
+import { currentUser } from "@clerk/nextjs";
 
 interface Props {
   currentUserId: string;
@@ -11,6 +12,7 @@ interface Props {
 
 const ThreadsTab = async ({ currentUserId, accountId, accountType }: Props) => {
   let result: any;
+  const userInfo = await fetchUser(currentUserId);
 
   if (accountType === "Community") {
     result = await fetchCommunityPosts(accountId);
@@ -37,10 +39,11 @@ const ThreadsTab = async ({ currentUserId, accountId, accountType }: Props) => {
                   image: thread.author.image,
                   id: thread.author.id,
                 }
-          } // todo
-          community={thread.community} // todo
+          }
+          community={thread.community}
           createdAt={thread.createdAt}
           comments={thread.children}
+          canDelete={userInfo._id.toString() === thread.author._id.toString()}
         />
       ))}
     </section>
