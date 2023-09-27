@@ -60,12 +60,15 @@ export async function createThread({
 }: Params) {
   try {
     connectToDB();
+    console.log("comid :>> ", communityId);
 
     const communityIdObject = await Community.findOne(
+      // its null
       { id: communityId },
       { _id: 1 }
     );
 
+    console.log("communityIdObject :>> ", communityIdObject);
     const createdThread = await Thread.create({
       text,
       author,
