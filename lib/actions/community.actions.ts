@@ -43,6 +43,7 @@ export async function createCommunity(
 
     return createdCommunity;
   } catch (error) {
+    // Handle any errors
     console.error("Error creating community:", error);
     throw error;
   }
@@ -63,16 +64,17 @@ export async function fetchCommunityDetails(id: string) {
 
     return communityDetails;
   } catch (error) {
+    // Handle any errors
     console.error("Error fetching community details:", error);
     throw error;
   }
 }
 
-export async function fetchCommunityThreads(id: string) {
+export async function fetchCommunityPosts(id: string) {
   try {
     connectToDB();
 
-    const communityThreads = await Community.findById(id).populate({
+    const communityPosts = await Community.findById(id).populate({
       path: "threads",
       model: Thread,
       populate: [
@@ -93,9 +95,10 @@ export async function fetchCommunityThreads(id: string) {
       ],
     });
 
-    return communityThreads;
+    return communityPosts;
   } catch (error) {
-    console.error("Error fetching community Threads:", error);
+    // Handle any errors
+    console.error("Error fetching community posts:", error);
     throw error;
   }
 }
@@ -192,6 +195,7 @@ export async function addMemberToCommunity(
 
     return community;
   } catch (error) {
+    // Handle any errors
     console.error("Error adding member to community:", error);
     throw error;
   }
@@ -232,6 +236,7 @@ export async function removeUserFromCommunity(
 
     return { success: true };
   } catch (error) {
+    // Handle any errors
     console.error("Error removing user from community:", error);
     throw error;
   }
@@ -258,6 +263,7 @@ export async function updateCommunityInfo(
 
     return updatedCommunity;
   } catch (error) {
+    // Handle any errors
     console.error("Error updating community information:", error);
     throw error;
   }
