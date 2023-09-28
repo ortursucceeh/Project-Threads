@@ -1,9 +1,9 @@
-import ThreadCard from "@/components/cards/ThreadCard";
+import InfiniteScrollThreads from "@/components/shared/InfiniteScrollThreads";
 import { fetchThreads } from "@/lib/actions/thread.actions";
 import { currentUser } from "@clerk/nextjs";
 
 export default async function Home() {
-  const result = await fetchThreads(1, 30);
+  const result = await fetchThreads(1, 15);
   const user = await currentUser();
 
   // console.log(result);
@@ -15,21 +15,10 @@ export default async function Home() {
         {result.threads.length === 0 ? (
           <p className="no-result">No threads found</p>
         ) : (
-          <>
-            {result.threads.map((thread) => (
-              <ThreadCard
-                key={thread._id}
-                id={thread._id}
-                currentUserId={user?.id || ""}
-                parentId={thread.parentId}
-                content={thread.text}
-                author={thread.author}
-                community={thread.community}
-                createdAt={thread.createdAt}
-                comments={thread.children}
-              />
-            ))}
-          </>
+          <InfiniteScrollThreads
+            initialThreads={result.threads}
+            currentUserId={user?.id || ""}
+          />
         )}
       </section>
     </>

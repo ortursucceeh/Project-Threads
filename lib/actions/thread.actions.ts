@@ -8,12 +8,12 @@ import User from "../models/user.model";
 import Thread from "../models/thread.model";
 import Community from "../models/community.model";
 
-export async function fetchThreads(pageNumber = 1, pageSize = 20) {
+export async function fetchThreads(pageNumber = 1, pageSize = 5) {
   connectToDB();
 
   const skipAmount = (pageNumber - 1) * pageSize;
 
-  const threadsQuery = Thread.find({ parentId: { $in: [null, undefined] } })
+  const threadsQuery = Thread.find({ parentId: { $exists: false } })
     .sort({ createdAt: "desc" })
     .skip(skipAmount)
     .limit(pageSize)
@@ -42,7 +42,7 @@ export async function fetchThreads(pageNumber = 1, pageSize = 20) {
 
   const isNext = totalThreadsCount > skipAmount + threads.length;
 
-  return { threads, isNext };
+  return { threads: JSON.parse(JSON.stringify(threads)), isNext };
 }
 
 interface Params {
@@ -60,7 +60,7 @@ export async function createThread({
 }: Params) {
   try {
     connectToDB();
-    console.log("comid :>> ", communityId);
+    // console.log("comid :>> ", communityId);
 
     const communityIdObject = await Community.findOne(
       // its null

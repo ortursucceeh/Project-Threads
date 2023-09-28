@@ -1,4 +1,3 @@
-import { deleteThread } from "@/lib/actions/thread.actions";
 import { formatDateString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -33,7 +32,7 @@ const ThreadCard = ({
   isComment,
   canDelete,
 }: Props) => {
-  console.log("author :>> ", author);
+  // console.log("author :>> ", author);
   return (
     <article
       className={`flex flex-col w-full rounded-xl relative ${
@@ -81,7 +80,10 @@ const ThreadCard = ({
                   </div>
                 )}
 
-                <p className="text-subtle-medium text-gray-1">
+                <p
+                  className="text-subtle-medium text-gray-1"
+                  suppressHydrationWarning
+                >
                   {formatDateString(createdAt)}
                 </p>
               </div>
