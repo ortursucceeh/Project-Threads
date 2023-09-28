@@ -23,12 +23,7 @@ export default function Bottombar() {
               key={link.label}
               className={`${isActive && "bg-primary-500"} bottombar_link`}
             >
-              <Image
-                src={link.imgURL}
-                alt={link.label}
-                width={24}
-                height={24}
-              />
+              <Image src={link.image} alt={link.label} width={24} height={24} />
 
               <p className="text-subtle-medium text-light-1 max-sm:hidden">
                 {link.label.split(/\s+./)[0]}

@@ -33,6 +33,7 @@ const ThreadCard = ({
   isComment,
   canDelete,
 }: Props) => {
+  console.log("author :>> ", author);
   return (
     <article
       className={`flex flex-col w-full rounded-xl relative ${
@@ -133,7 +134,7 @@ const ThreadCard = ({
           {comments.slice(0, 3).map((comment, indx) => (
             <Image
               key={indx}
-              src={comment.author.image}
+              src={comment?.author?.image}
               alt={`user_${indx}`}
               width={26}
               height={26}

@@ -1,37 +1,39 @@
+import { TabsType } from "@/types/thread.types";
+
 export const sidebarLinks = [
   {
-    imgURL: "/assets/home.svg",
+    image: "/assets/home.svg",
     route: "/",
     label: "Home",
   },
   {
-    imgURL: "/assets/search.svg",
+    image: "/assets/search.svg",
     route: "/search",
     label: "Search",
   },
   {
-    imgURL: "/assets/heart.svg",
+    image: "/assets/heart.svg",
     route: "/activity",
     label: "Activity",
   },
   {
-    imgURL: "/assets/create.svg",
+    image: "/assets/create.svg",
     route: "/create-thread",
     label: "Create Thread",
   },
   {
-    imgURL: "/assets/community.svg",
+    image: "/assets/community.svg",
     route: "/communities",
     label: "Communities",
   },
   {
-    imgURL: "/assets/user.svg",
+    image: "/assets/user.svg",
     route: "/profile",
     label: "Profile",
   },
 ];
 
-export const profileTabs = [
+export const profileTabs: { value: TabsType; label: string; icon: string }[] = [
   { value: "threads", label: "Threads", icon: "/assets/reply.svg" },
   { value: "replies", label: "Replies", icon: "/assets/members.svg" },
   { value: "tagged", label: "Tagged", icon: "/assets/tag.svg" },

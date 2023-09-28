@@ -13,10 +13,12 @@ export async function fetchUser(userId: string) {
   try {
     connectToDB();
 
-    return await User.findOne({ id: userId }).populate({
-      path: "communities",
-      model: Community,
-    });
+    return await User.findOne({ id: userId })
+      .populate({
+        path: "communities",
+        model: Community,
+      })
+      .populate({ path: "threads", model: Thread });
   } catch (error: any) {
     throw new Error(`Failed to fetch user: ${error.message}`);
   }
@@ -179,5 +181,33 @@ export async function getActivity(userId: string) {
   } catch (error) {
     console.error("Error fetching replies: ", error);
     throw error;
+  }
+}
+
+export async function fetchUserReplies(userId: string) {
+  connectToDB();
+
+  try {
+    const user = await User.findOne({ id: userId });
+    // console.log("user :>> ", user);
+    const replies = await Thread.find({
+      author: user._id,
+      parentId: { $exists: true },
+    })
+      .populate({
+        path: "author",
+        model: User,
+        select: "name image _id id",
+      })
+      .exec();
+
+    // console.log("replies :>> ", replies);
+
+    return {
+      threads: replies,
+    };
+  } catch (err) {
+    console.error("Error while fetching user's replies:", err);
+    throw new Error("Unable to fetch user's replies");
   }
 }

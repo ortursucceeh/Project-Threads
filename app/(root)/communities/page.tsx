@@ -41,7 +41,7 @@ const Page = async ({
                 id={community.id}
                 name={community.name}
                 username={community.username}
-                imgUrl={community.image}
+                image={community.image}
                 bio={community.bio}
                 members={community.members}
               />

@@ -32,12 +32,7 @@ function LeftSidebar() {
               key={link.label}
               className={`${isActive && "bg-primary-500"} leftsidebar_link`}
             >
-              <Image
-                src={link.imgURL}
-                alt={link.label}
-                width={24}
-                height={24}
-              />
+              <Image src={link.image} alt={link.label} width={24} height={24} />
 
               <p className="text-light-1 max-lg:hidden">{link.label}</p>
             </Link>
