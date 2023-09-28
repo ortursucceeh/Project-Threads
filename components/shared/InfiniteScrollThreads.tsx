@@ -47,8 +47,8 @@ export default function InfiniteScrollThreads({
     <>
       {threads?.map((thread) => (
         <ThreadCard
-          key={thread._id}
-          id={thread._id}
+          key={thread._id.toString()}
+          id={thread._id.toString()}
           currentUserId={currentUserId}
           parentId={thread.parentId}
           content={thread.text}

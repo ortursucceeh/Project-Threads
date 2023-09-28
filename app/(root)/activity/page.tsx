@@ -23,7 +23,7 @@ const Page = async () => {
         {activity.length ? (
           <>
             {activity.map((act) => (
-              <Link key={act._id} href={`/thread/${act.parentId}`}>
+              <Link key={act._id.toString()} href={`/thread/${act.parentId}`}>
                 <article className="activity-card">
                   <Image
                     src={act.author.image}

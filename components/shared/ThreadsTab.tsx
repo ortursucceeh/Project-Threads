@@ -37,8 +37,8 @@ const ThreadsTab = async ({
     <section className="flex flex-col gap-10 mt-9">
       {result.threads.map((thread: any) => (
         <ThreadCard
-          key={thread._id}
-          id={thread._id}
+          key={thread._id.toString()}
+          id={thread._id.toString()}
           currentUserId={currentUserId}
           parentId={thread.parentId}
           content={thread.text}
