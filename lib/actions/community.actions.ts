@@ -306,3 +306,21 @@ export async function deleteCommunity(communityId: string) {
     throw error;
   }
 }
+
+export async function fetchRandomCommunities() {
+  connectToDB();
+
+  try {
+
+
+    const randomCommunities = await Community.find()
+      .limit(5)
+
+      .exec();
+
+    return randomCommunities;
+  } catch (err) {
+    console.error("Error while fetching suggested communities:", err);
+    throw new Error("Unable to fetch suggested communities");
+  }
+}

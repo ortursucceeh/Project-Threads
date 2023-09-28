@@ -8,6 +8,7 @@ import Thread from "../models/thread.model";
 import User from "../models/user.model";
 
 import { connectToDB } from "../mongoose";
+import { currentUser } from "@clerk/nextjs";
 
 export async function fetchUser(userId: string) {
   try {
@@ -209,5 +210,27 @@ export async function fetchUserReplies(userId: string) {
   } catch (err) {
     console.error("Error while fetching user's replies:", err);
     throw new Error("Unable to fetch user's replies");
+  }
+}
+
+export async function fetchRandomUsers() {
+  connectToDB();
+
+  try {
+    const user = await currentUser();
+
+    const randomUsers = await User.find({ id: { $ne: user?.id } })
+      .limit(5)
+      .populate({
+        path: "threads",
+        model: Thread,
+        select: "id",
+      })
+      .exec();
+
+    return randomUsers;
+  } catch (err) {
+    console.error("Error while fetching suggested users:", err);
+    throw new Error("Unable to fetch suggested users");
   }
 }
