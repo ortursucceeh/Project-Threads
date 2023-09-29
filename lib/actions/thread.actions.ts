@@ -30,7 +30,6 @@ export async function fetchThreads(pageNumber = 1, pageSize = 5) {
       populate: {
         path: "author",
         model: User,
-        select: "_id name parentId image",
       },
     });
 

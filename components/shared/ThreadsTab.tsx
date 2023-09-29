@@ -29,8 +29,6 @@ const ThreadsTab = async ({
     result = await fetchUserReplies(accountId);
   }
 
-  // console.log("result :>> ", result);
-
   if (!result) redirect("/");
 
   return (
@@ -55,6 +53,7 @@ const ThreadsTab = async ({
           createdAt={thread.createdAt}
           comments={thread.children}
           canDelete={userInfo._id.toString() === thread.author._id.toString()}
+          isComment={tabType === "replies" ? true : false}
         />
       ))}
     </section>
