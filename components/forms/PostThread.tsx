@@ -18,6 +18,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { ThreadValidation } from "@/lib/validations/thread";
 import { createThread } from "@/lib/actions/thread.actions";
 import { useOrganization } from "@clerk/nextjs";
+import toast from "react-hot-toast";
 
 interface Props {
   user: {
@@ -51,7 +52,7 @@ function PostThread({ userId }: { userId: string }) {
       author: userId,
       communityId: organization ? organization.id : null,
       path: pathname,
-    });
+    }).then(() => toast(`Thread has been successfully created!`));
 
     router.push("/");
   };

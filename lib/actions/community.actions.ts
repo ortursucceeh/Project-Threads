@@ -311,11 +311,8 @@ export async function fetchRandomCommunities() {
   connectToDB();
 
   try {
-
-
     const randomCommunities = await Community.find()
       .limit(5)
-
       .exec();
 
     return randomCommunities;

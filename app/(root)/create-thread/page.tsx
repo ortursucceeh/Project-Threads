@@ -12,7 +12,6 @@ async function Page() {
 
   if (!userInfo.onboarded) redirect("/onboarding");
 
-  // <PostThread userId={JSON.parse(JSON.stringify(userInfo._id))} />
   return (
     <>
       <h1 className="head-text">Create Thred</h1>
