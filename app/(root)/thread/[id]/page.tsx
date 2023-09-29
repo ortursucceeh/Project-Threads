@@ -15,9 +15,37 @@ const Page = async ({ params }: { params: { id: string } }) => {
   if (!userInfo?.onboarded) redirect("/onboarding");
 
   const thread = await fetchThreadById(params.id);
+  let parentThread;
+
+  if (thread?.parentId) {
+    parentThread = await fetchThreadById(thread.parentId);
+  }
 
   return (
-    <section className="relative">
+    <section>
+      {parentThread && (
+        <>
+          <div>
+            <ThreadCard
+              key={`${parentThread._id}_parent`}
+              id={parentThread._id.toString()}
+              currentUserId={user?.id || ""}
+              parentId={parentThread.parentId}
+              content={parentThread.text}
+              author={parentThread.author}
+              community={parentThread.community}
+              createdAt={parentThread.createdAt}
+              comments={parentThread.children}
+            />
+          </div>
+          <div className="thread-card_bar "></div>
+          <p className="my-3 ml-5 p-2 text-light-3">
+            Replying to{" "}
+            <span className="text-primary-500">@{thread.author.name}</span>
+          </p>
+        </>
+      )}
+
       <div>
         <ThreadCard
           key={thread._id}
