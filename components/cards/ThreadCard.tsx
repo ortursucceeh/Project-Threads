@@ -2,6 +2,9 @@ import { formatDateString } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import DeleteButton from "../ui/delete";
+import Icon from "../ui/icon";
+import { addLikeToThread } from "@/lib/actions/thread.actions";
+import { usePathname } from "next/navigation";
 
 interface Props {
   id: string;
@@ -18,6 +21,7 @@ interface Props {
   comments: { author: { image: string } }[];
   isComment?: boolean;
   canDelete?: boolean;
+  likes?: string[];
 }
 
 const ThreadCard = ({
@@ -29,10 +33,13 @@ const ThreadCard = ({
   community,
   createdAt,
   comments,
+  likes,
   isComment,
   canDelete,
 }: Props) => {
-  // console.log("author :>> ", author);
+  const pathname = usePathname();
+  // console.log("likes :>> ", likes);
+  // console.log("currentUserId :>> ", currentUserId);
   return (
     <article
       className={`flex flex-col w-full rounded-xl relative ${
@@ -92,14 +99,23 @@ const ThreadCard = ({
             <p className="mt-3 text-small-regular text-light-2">{content}</p>
 
             <div className={`flex flex-col gap-3 mt-5 ${isComment && "mb-10"}`}>
-              <div className="flex gap-3.5 ">
-                <Image
-                  src="/assets/heart-gray.svg"
-                  alt="heaer"
+              <div className="flex gap-3.5 items-center ">
+                <Icon
+                  src={`/assets/${
+                    likes?.map((user: any) => user.id)?.includes(currentUserId)
+                      ? "heart-filled.svg"
+                      : "heart-gray.svg"
+                  }`}
+                  alt="heart"
                   width={24}
                   height={24}
-                  className="object-contain cursor-pointer"
+                  onClick={() => {
+                    addLikeToThread(id, currentUserId, pathname);
+                  }}
                 />
+                <p className="text-violet-200 ml-[-10px] font-semi h-[26px]">
+                  {likes?.length}
+                </p>
                 <Link href={`/thread/${id}`}>
                   <Image
                     src="/assets/reply.svg"

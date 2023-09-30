@@ -56,6 +56,7 @@ export default function InfiniteScrollThreads({
           community={thread.community}
           createdAt={thread.createdAt}
           comments={thread.children}
+          likes={thread.likes}
         />
       ))}
       {isLastPage && (

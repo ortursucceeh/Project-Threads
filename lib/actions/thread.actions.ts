@@ -7,6 +7,8 @@ import { connectToDB } from "../mongoose";
 import User from "../models/user.model";
 import Thread from "../models/thread.model";
 import Community from "../models/community.model";
+import { currentUser } from "@clerk/nextjs";
+import { fetchUser } from "./user.actions";
 
 export async function fetchThreads(pageNumber = 1, pageSize = 5) {
   connectToDB();
@@ -31,6 +33,11 @@ export async function fetchThreads(pageNumber = 1, pageSize = 5) {
         path: "author",
         model: User,
       },
+    })
+    .populate({
+      path: "likes",
+      model: User,
+      select: "id _id",
     });
 
   const totalThreadsCount = await Thread.countDocuments({
@@ -184,6 +191,11 @@ export async function fetchThreadById(threadId: string) {
           },
         ],
       })
+      .populate({
+        path: "likes",
+        model: User,
+        select: "id _id",
+      })
       .exec();
 
     return thread;
@@ -224,5 +236,50 @@ export async function addCommentToThread(
   } catch (err) {
     console.error("Error while adding comment:", err);
     throw new Error("Unable to add comment");
+  }
+}
+
+export async function addLikeToThread(
+  threadId: string,
+  userId: string,
+  path: string
+) {
+  connectToDB();
+
+  try {
+    const thread = await Thread.findById(threadId);
+
+    if (!thread) {
+      throw new Error("Thread not found");
+    }
+
+    const user = await fetchUser(userId);
+
+    if (!user) {
+      throw new Error("Error to fetch user");
+    }
+
+    const hasLiked = thread.likes.includes(user._id);
+
+    hasLiked
+      ? await Thread.findByIdAndUpdate(
+          threadId,
+          {
+            $pull: { likes: user?._id },
+          },
+          { new: true }
+        )
+      : await Thread.findByIdAndUpdate(
+          threadId,
+          {
+            $push: { likes: user?._id },
+          },
+          { new: true }
+        );
+
+    revalidatePath(path);
+  } catch (err) {
+    console.error("Error to like thread:", err);
+    throw new Error("Unable to like thread");
   }
 }

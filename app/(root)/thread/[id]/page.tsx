@@ -36,6 +36,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
               community={parentThread.community}
               createdAt={parentThread.createdAt}
               comments={parentThread.children}
+              likes={parentThread.likes}
             />
           </div>
           <div className="thread-card_bar "></div>
@@ -57,6 +58,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           community={thread.community}
           createdAt={thread.createdAt}
           comments={thread.children}
+          likes={thread.likes}
         />
       </div>
 
@@ -80,6 +82,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             community={childItem.community}
             createdAt={childItem.createdAt}
             comments={childItem.children}
+            likes={thread.likes}
             isComment
           />
         ))}

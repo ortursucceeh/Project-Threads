@@ -52,6 +52,7 @@ const ThreadsTab = async ({
           community={thread.community}
           createdAt={thread.createdAt}
           comments={thread.children}
+          likes={thread.likes}
           canDelete={userInfo._id.toString() === thread.author._id.toString()}
           isComment={tabType === "replies" ? true : false}
         />
