@@ -40,7 +40,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             />
           </div>
           <div className="thread-card_bar "></div>
-          <p className="my-3 ml-5 p-2 text-light-3">
+          <p className="p-2 my-3 ml-5 text-light-3">
             Replying to{" "}
             <span className="text-primary-500">@{thread.author.name}</span>
           </p>
@@ -82,7 +82,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             community={childItem.community}
             createdAt={childItem.createdAt}
             comments={childItem.children}
-            likes={thread.likes}
+            likes={childItem.likes}
             isComment
           />
         ))}

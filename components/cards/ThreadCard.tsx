@@ -3,8 +3,6 @@ import Image from "next/image";
 import Link from "next/link";
 import DeleteButton from "../ui/delete";
 import Icon from "../ui/icon";
-import { addLikeToThread } from "@/lib/actions/thread.actions";
-import { usePathname } from "next/navigation";
 
 interface Props {
   id: string;
@@ -22,12 +20,13 @@ interface Props {
   isComment?: boolean;
   canDelete?: boolean;
   likes?: string[];
+  pathname?: string;
 }
+export const dynamic = "force-dynamic";
 
 const ThreadCard = ({
   id,
   currentUserId,
-  parentId,
   content,
   author,
   community,
@@ -36,10 +35,15 @@ const ThreadCard = ({
   likes,
   isComment,
   canDelete,
+  pathname,
 }: Props) => {
-  const pathname = usePathname();
+  // const pathname = usePathname();
   // console.log("likes :>> ", likes);
-  // console.log("currentUserId :>> ", currentUserId);
+  console.log("currentUserId :>> ", currentUserId);
+  // console.log(likes?.map((user: any) => user.id.toString()));
+  // console.log("id", id);
+  console.log("likes :>> ", likes);
+  // console.log("likes.length :>> ", likes?.length);
   return (
     <article
       className={`flex flex-col w-full rounded-xl relative ${
@@ -102,19 +106,22 @@ const ThreadCard = ({
               <div className="flex gap-3.5 items-center ">
                 <Icon
                   src={`/assets/${
-                    likes?.map((user: any) => user.id)?.includes(currentUserId)
+                    likes
+                      ?.map((user: any) => user.id.toString())
+                      ?.includes(currentUserId)
                       ? "heart-filled.svg"
                       : "heart-gray.svg"
                   }`}
                   alt="heart"
                   width={24}
                   height={24}
-                  onClick={() => {
-                    addLikeToThread(id, currentUserId, pathname);
-                  }}
+                  id={id}
+                  currentUserId={currentUserId}
+                  type="like"
+                  pathname={pathname!}
                 />
                 <p className="text-violet-200 ml-[-10px] font-semi h-[26px]">
-                  {likes?.length}
+                  {likes ? likes.length : 0}
                 </p>
                 <Link href={`/thread/${id}`}>
                   <Image

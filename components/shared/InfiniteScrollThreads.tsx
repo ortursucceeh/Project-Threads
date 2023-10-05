@@ -8,16 +8,21 @@ import { fetchThreads } from "@/lib/actions/thread.actions";
 import { Document } from "mongodb";
 import Spinner from "../ui/spinner";
 import ThreadCard from "../cards/ThreadCard";
+import { usePathname } from "next/navigation";
 
 type Props = {
   initialThreads: Document[] | undefined;
   currentUserId: string;
 };
 
+export const dynamic = "force-dynamic";
+
 export default function InfiniteScrollThreads({
   initialThreads,
   currentUserId,
 }: Props) {
+  // console.log("currentUserId from inf", currentUserId);
+  const pathname = usePathname();
   const [threads, setThreads] = useState(initialThreads);
   const [page, setPage] = useState(1);
   const [ref, inView] = useInView();
@@ -57,6 +62,7 @@ export default function InfiniteScrollThreads({
           createdAt={thread.createdAt}
           comments={thread.children}
           likes={thread.likes}
+          pathname={pathname}
         />
       ))}
       {isLastPage && (

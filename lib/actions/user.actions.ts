@@ -220,7 +220,7 @@ export async function fetchRandomUsers() {
     const user = await currentUser();
 
     const randomUsers = await User.find({ id: { $ne: user?.id } })
-      .limit(5)
+      .limit(4)
       .populate({
         path: "threads",
         model: Thread,

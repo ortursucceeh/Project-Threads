@@ -231,7 +231,7 @@ export async function addCommentToThread(
     originalThread.children.push(savedCommentThread._id);
 
     await originalThread.save();
-
+    console.log("path from comment :>> ", path);
     revalidatePath(path);
   } catch (err) {
     console.error("Error while adding comment:", err);
@@ -261,21 +261,21 @@ export async function addLikeToThread(
 
     const hasLiked = thread.likes.includes(user._id);
 
-    hasLiked
-      ? await Thread.findByIdAndUpdate(
-          threadId,
-          {
-            $pull: { likes: user?._id },
-          },
-          { new: true }
-        )
-      : await Thread.findByIdAndUpdate(
-          threadId,
-          {
-            $push: { likes: user?._id },
-          },
-          { new: true }
-        );
+    console.log("userId :>> ", userId);
+    console.log("user._id :>> ", user._id);
+    console.log("threadId :>> ", threadId);
+    console.log("thread.likes :>> ", thread.likes);
+    console.log("hasLiked :>> ", hasLiked);
+
+    if (hasLiked) {
+      thread.likes = thread.likes.filter(
+        (likeUserId: any) => likeUserId.toString() !== user._id.toString()
+      );
+    } else {
+      thread.likes.push(user._id);
+    }
+
+    await thread.save();
 
     revalidatePath(path);
   } catch (err) {
