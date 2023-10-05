@@ -21,7 +21,6 @@ export default function InfiniteScrollThreads({
   initialThreads,
   currentUserId,
 }: Props) {
-  // console.log("currentUserId from inf", currentUserId);
   const pathname = usePathname();
   const [threads, setThreads] = useState(initialThreads);
   const [page, setPage] = useState(1);

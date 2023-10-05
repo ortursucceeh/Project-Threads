@@ -14,7 +14,6 @@ async function Page({ params }: { params: { id: string } }) {
   if (!user) return null;
 
   const communityDetails = await fetchCommunityDetails(params.id);
-  console.log("communityDetails : >> ", communityDetails.members);
 
   return (
     <section>

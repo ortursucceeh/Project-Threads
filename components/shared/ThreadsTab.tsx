@@ -38,6 +38,7 @@ const ThreadsTab = async ({
           key={thread._id.toString()}
           id={thread._id.toString()}
           currentUserId={currentUserId}
+          currentUser_id={userInfo._id.toString()}
           parentId={thread.parentId}
           content={thread.text}
           author={

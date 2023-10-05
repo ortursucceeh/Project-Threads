@@ -9,6 +9,7 @@ interface Props {
   currentUserId: string;
   parentId: string | null;
   content: string;
+  currentUser_id?: string;
   author: {
     name: string;
     image: string;
@@ -22,11 +23,13 @@ interface Props {
   likes?: string[];
   pathname?: string;
 }
+
 export const dynamic = "force-dynamic";
 
 const ThreadCard = ({
   id,
   currentUserId,
+  currentUser_id,
   content,
   author,
   community,
@@ -37,13 +40,7 @@ const ThreadCard = ({
   canDelete,
   pathname,
 }: Props) => {
-  // const pathname = usePathname();
-  // console.log("likes :>> ", likes);
-  console.log("currentUserId :>> ", currentUserId);
-  // console.log(likes?.map((user: any) => user.id.toString()));
-  // console.log("id", id);
-  console.log("likes :>> ", likes);
-  // console.log("likes.length :>> ", likes?.length);
+  console.log("currentUser_id :>> ", currentUser_id);
   return (
     <article
       className={`flex flex-col w-full rounded-xl relative ${
@@ -107,8 +104,11 @@ const ThreadCard = ({
                 <Icon
                   src={`/assets/${
                     likes
-                      ?.map((user: any) => user.id.toString())
-                      ?.includes(currentUserId)
+                      ?.map((user: any) => user.id)
+                      ?.includes(currentUserId) ||
+                    likes
+                      ?.map((user: any) => user._id.toString())
+                      ?.includes(currentUser_id)
                       ? "heart-filled.svg"
                       : "heart-gray.svg"
                   }`}

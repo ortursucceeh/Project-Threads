@@ -30,6 +30,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
               key={`${parentThread._id}_parent`}
               id={parentThread._id.toString()}
               currentUserId={user?.id || ""}
+              currentUser_id={userInfo._id.toString()}
               parentId={parentThread.parentId}
               content={parentThread.text}
               author={parentThread.author}
@@ -52,6 +53,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
           key={thread._id}
           id={thread._id.toString()}
           currentUserId={user?.id || ""}
+          currentUser_id={userInfo._id.toString()}
           parentId={thread.parentId}
           content={thread.text}
           author={thread.author}
@@ -76,6 +78,7 @@ const Page = async ({ params }: { params: { id: string } }) => {
             key={childItem._id.toString()}
             id={childItem._id.toString()}
             currentUserId={user?.id || ""}
+            currentUser_id={userInfo._id.toString()}
             parentId={childItem.parentId}
             content={childItem.text}
             author={childItem.author}

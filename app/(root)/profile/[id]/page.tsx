@@ -11,6 +11,7 @@ async function Page({ params }: { params: { id: string } }) {
   const user = await currentUser();
 
   if (!user) return null;
+  const currentUserInfo = await fetchUser(user.id);
 
   const userInfo = await fetchUser(params.id);
 

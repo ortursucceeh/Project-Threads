@@ -191,11 +191,11 @@ export async function fetchThreadById(threadId: string) {
           },
         ],
       })
-      .populate({
-        path: "likes",
-        model: User,
-        select: "id _id",
-      })
+      // .populate({
+      //   path: "likes",
+      //   model: User,
+      //   select: "id _id",
+      // })
       .exec();
 
     return thread;
