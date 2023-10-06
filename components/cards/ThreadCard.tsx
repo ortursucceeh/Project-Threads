@@ -42,7 +42,7 @@ const ThreadCard = ({
   canDelete,
   pathname,
 }: Props) => {
-  console.log("currentUser_id :>> ", currentUser_id);
+  // console.log("currentUser_id :>> ", currentUser_id);
   return (
     <article
       className={`flex flex-col w-full rounded-xl relative ${
@@ -135,13 +135,25 @@ const ThreadCard = ({
                   />
                 </Link>
                 {!isComment && (
-                  <Image
-                    src="/assets/bookmark.svg"
-                    alt="share"
+                  <Icon
+                    src={`/assets/${
+                      isSaved ? "bookmark-filled.svg" : "bookmark.svg"
+                    }`}
+                    alt="bookmark"
                     width={24}
                     height={24}
-                    className="object-contain cursor-pointer"
+                    id={id}
+                    currentUserId={currentUserId}
+                    type="bookmark"
+                    pathname={pathname!}
                   />
+                  // <Image
+                  //   src="/assets/bookmark.svg"
+                  //   alt="share"
+                  //   width={24}
+                  //   height={24}
+                  //   className="object-contain cursor-pointer"
+                  // />
                 )}
               </div>
             </div>

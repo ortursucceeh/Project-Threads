@@ -261,12 +261,6 @@ export async function addLikeToThread(
 
     const isLiked = thread.likes.includes(user._id);
 
-    // console.log("userId :>> ", userId);
-    // console.log("user._id :>> ", user._id);
-    // console.log("threadId :>> ", threadId);
-    // console.log("thread.likes :>> ", thread.likes);
-    // console.log("hasLiked :>> ", hasLiked);
-
     if (isLiked) {
       thread.likes = thread.likes.filter(
         (likeUserId: any) => likeUserId.toString() !== user._id.toString()
@@ -304,11 +298,14 @@ export async function saveThread(
       throw new Error("Error to fetch user");
     }
 
-    const isSaved = user.saved.includes(thread._id);
+    const isSaved = user.saved
+      .map((thread: any) => thread._id.toString())
+      .includes(thread._id.toString());
 
     if (isSaved) {
       user.saved = user.saved.filter(
-        (saveThreadId: any) => saveThreadId.toString() !== thread._id.toString()
+        (savedThread: any) =>
+          savedThread._id.toString() !== thread._id.toString()
       );
     } else {
       user.saved.push(thread._id);

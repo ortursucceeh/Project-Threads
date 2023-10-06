@@ -60,6 +60,7 @@ async function Page({ params }: { params: { id: string } }) {
                 accountId={userInfo.id}
                 accountType="User"
                 tabType={tab.value}
+                userSaves={JSON.parse(JSON.stringify(currentUserInfo.saved))}
               />
             </TabsContent>
           ))}

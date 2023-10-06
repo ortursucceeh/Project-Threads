@@ -1,5 +1,6 @@
 import InfiniteScrollThreads from "@/components/shared/InfiniteScrollThreads";
 import { fetchThreads } from "@/lib/actions/thread.actions";
+import { fetchUser } from "@/lib/actions/user.actions";
 import { currentUser } from "@clerk/nextjs";
 import React from "react";
 
@@ -8,6 +9,10 @@ export const dynamic = "force-dynamic";
 export default async function Home() {
   const result = await fetchThreads(1, 15);
   const user = await currentUser();
+
+  if (!user) return null;
+
+  const currentUserInfo = await fetchUser(user.id);
 
   // console.log(result);
 
@@ -21,6 +26,7 @@ export default async function Home() {
           <InfiniteScrollThreads
             initialThreads={result.threads}
             currentUserId={user?.id || ""}
+            userSaves={JSON.parse(JSON.stringify(currentUserInfo.saved))}
           />
         )}
       </section>

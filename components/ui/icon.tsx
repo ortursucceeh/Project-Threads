@@ -11,8 +11,8 @@ type Props = {
   height: number;
   id: string;
   currentUserId: string;
-  type: "like" | "save";
-  pathname: string;
+  type: "like" | "bookmark";
+  pathname?: string;
 };
 
 const Icon = ({
@@ -22,7 +22,6 @@ const Icon = ({
   height,
   id,
   currentUserId,
-  pathname,
   type = "like",
 }: Props) => {
   const path = usePathname();
@@ -34,7 +33,6 @@ const Icon = ({
       saveThread(id, currentUserId, path);
     }
   };
-  // console.log("currentUserId from icon:>> ", currentUserId);
 
   return (
     <Image

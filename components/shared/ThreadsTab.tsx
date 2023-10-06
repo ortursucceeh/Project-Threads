@@ -10,12 +10,14 @@ interface Props {
   accountId: string;
   accountType: string;
   tabType: TabsType;
+  userSaves: { _id: string }[];
 }
 
 const ThreadsTab = async ({
   currentUserId,
   accountId,
   accountType,
+  userSaves,
   tabType,
 }: Props) => {
   let result: any;
@@ -55,6 +57,9 @@ const ThreadsTab = async ({
           comments={thread.children}
           likes={thread.likes}
           canDelete={userInfo._id.toString() === thread.author._id.toString()}
+          isSaved={userSaves
+            .map((thread) => thread._id)
+            ?.includes(thread._id.toString())}
           isComment={tabType === "replies" ? true : false}
         />
       ))}
