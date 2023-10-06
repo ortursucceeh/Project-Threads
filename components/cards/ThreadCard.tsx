@@ -19,6 +19,7 @@ interface Props {
   createdAt: string;
   comments: { author: { image: string } }[];
   isComment?: boolean;
+  isSaved?: boolean;
   canDelete?: boolean;
   likes?: string[];
   pathname?: string;
@@ -37,6 +38,7 @@ const ThreadCard = ({
   comments,
   likes,
   isComment,
+  isSaved,
   canDelete,
   pathname,
 }: Props) => {
@@ -126,26 +128,21 @@ const ThreadCard = ({
                 <Link href={`/thread/${id}`}>
                   <Image
                     src="/assets/reply.svg"
-                    alt="heaer"
+                    alt="share"
                     width={24}
                     height={24}
                     className="object-contain cursor-pointer"
                   />
                 </Link>
-                <Image
-                  src="/assets/repost.svg"
-                  alt="heaer"
-                  width={24}
-                  height={24}
-                  className="object-contain cursor-pointer"
-                />
-                <Image
-                  src="/assets/share.svg"
-                  alt="heaer"
-                  width={24}
-                  height={24}
-                  className="object-contain cursor-pointer"
-                />
+                {!isComment && (
+                  <Image
+                    src="/assets/bookmark.svg"
+                    alt="share"
+                    width={24}
+                    height={24}
+                    className="object-contain cursor-pointer"
+                  />
+                )}
               </div>
             </div>
           </div>

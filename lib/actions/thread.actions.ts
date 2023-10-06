@@ -259,15 +259,15 @@ export async function addLikeToThread(
       throw new Error("Error to fetch user");
     }
 
-    const hasLiked = thread.likes.includes(user._id);
+    const isLiked = thread.likes.includes(user._id);
 
-    console.log("userId :>> ", userId);
-    console.log("user._id :>> ", user._id);
-    console.log("threadId :>> ", threadId);
-    console.log("thread.likes :>> ", thread.likes);
-    console.log("hasLiked :>> ", hasLiked);
+    // console.log("userId :>> ", userId);
+    // console.log("user._id :>> ", user._id);
+    // console.log("threadId :>> ", threadId);
+    // console.log("thread.likes :>> ", thread.likes);
+    // console.log("hasLiked :>> ", hasLiked);
 
-    if (hasLiked) {
+    if (isLiked) {
       thread.likes = thread.likes.filter(
         (likeUserId: any) => likeUserId.toString() !== user._id.toString()
       );
@@ -281,5 +281,44 @@ export async function addLikeToThread(
   } catch (err) {
     console.error("Error to like thread:", err);
     throw new Error("Unable to like thread");
+  }
+}
+
+export async function saveThread(
+  threadId: string,
+  userId: string,
+  path: string
+) {
+  connectToDB();
+
+  try {
+    const thread = await Thread.findById(threadId);
+
+    if (!thread) {
+      throw new Error("Thread not found");
+    }
+
+    const user = await fetchUser(userId);
+
+    if (!user) {
+      throw new Error("Error to fetch user");
+    }
+
+    const isSaved = user.saved.includes(thread._id);
+
+    if (isSaved) {
+      user.saved = user.saved.filter(
+        (saveThreadId: any) => saveThreadId.toString() !== thread._id.toString()
+      );
+    } else {
+      user.saved.push(thread._id);
+    }
+
+    await user.save();
+
+    revalidatePath(path);
+  } catch (err) {
+    console.error("Error while saving thread:", err);
+    throw new Error("Unable to save thread");
   }
 }

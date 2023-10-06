@@ -30,12 +30,6 @@ const threadSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
-  tagged: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-    },
-  ],
 });
 
 const Thread = mongoose.models.Thread || mongoose.model("Thread", threadSchema);
