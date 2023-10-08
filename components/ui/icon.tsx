@@ -1,6 +1,6 @@
 "use client";
 
-import { addLikeToThread, saveThread } from "@/lib/actions/thread.actions";
+import { addLikeToThread, SavedThread } from "@/lib/actions/thread.actions";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 

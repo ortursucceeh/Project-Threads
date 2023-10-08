@@ -42,7 +42,6 @@ const ThreadCard = ({
   canDelete,
   pathname,
 }: Props) => {
-  // console.log("currentUser_id :>> ", currentUser_id);
   return (
     <article
       className={`flex flex-col w-full rounded-xl relative ${
@@ -134,6 +133,11 @@ const ThreadCard = ({
                     className="object-contain cursor-pointer"
                   />
                 </Link>
+                {isComment && (
+                  <p className="text-violet-100 ml-[-10px] font-semi h-[26px]">
+                    {comments ? comments.length : 0}
+                  </p>
+                )}
                 {!isComment && (
                   <Icon
                     src={`/assets/${

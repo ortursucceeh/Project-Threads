@@ -14,9 +14,9 @@ const Page = async ({
 
   if (!user) return null;
 
-  const userInfo = await fetchUser(user.id);
+  const currentUserInfo = await fetchUser(user.id);
 
-  if (!userInfo.onboarded) redirect("/onboarding");
+  if (!currentUserInfo.onboarded) redirect("/onboarding");
   const search = (searchParams.search || "") as string;
 
   const result = await fetchCommunities({

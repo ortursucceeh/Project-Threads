@@ -237,3 +237,28 @@ export async function fetchRandomUsers() {
     throw new Error("Unable to fetch suggested users");
   }
 }
+
+export async function fetchUserSaved(userId: string) {
+  connectToDB();
+
+  try {
+    const user = await User.findOne({ id: userId });
+    // console.log("user :>> ", user);
+    const saved = await Thread.find({ _id: { $in: user.saved } })
+      .populate({
+        path: "author",
+        model: User,
+        select: "name image _id id",
+      })
+      .exec();
+
+    // console.log("replies :>> ", replies);
+
+    return {
+      threads: saved,
+    };
+  } catch (err) {
+    console.error("Error while fetching user's replies:", err);
+    throw new Error("Unable to fetch user's replies");
+  }
+}

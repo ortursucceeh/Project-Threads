@@ -1,1 +1,1 @@
-export type TabsType = "threads" | "replies" | "tagged";
+export type TabsType = "threads" | "replies" | "saved";

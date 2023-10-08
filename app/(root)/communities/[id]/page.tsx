@@ -7,11 +7,14 @@ import ThreadsTab from "@/components/shared/ThreadsTab";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchCommunityDetails } from "@/lib/actions/community.actions";
 import UserCard from "@/components/cards/UserCard";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 async function Page({ params }: { params: { id: string } }) {
   const user = await currentUser();
 
   if (!user) return null;
+
+  const currentUserInfo = await fetchUser(user.id);
 
   const communityDetails = await fetchCommunityDetails(params.id);
 
@@ -61,6 +64,7 @@ async function Page({ params }: { params: { id: string } }) {
               accountId={communityDetails._id}
               accountType="Community"
               tabType="threads"
+              userSaves={JSON.parse(JSON.stringify(currentUserInfo.saved))}
             />
           </TabsContent>
 

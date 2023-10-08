@@ -1,4 +1,8 @@
-import { fetchUser, fetchUserPosts } from "@/lib/actions/user.actions";
+import {
+  fetchUser,
+  fetchUserPosts,
+  fetchUserSaved,
+} from "@/lib/actions/user.actions";
 import ThreadCard from "../cards/ThreadCard";
 import { redirect } from "next/navigation";
 import { fetchCommunityPosts } from "@/lib/actions/community.actions";
@@ -27,8 +31,10 @@ const ThreadsTab = async ({
     result = await fetchCommunityPosts(accountId);
   } else if (tabType === "threads" && accountType === "User") {
     result = await fetchUserPosts(accountId);
-  } else {
+  } else if (tabType === "replies" && accountType === "User") {
     result = await fetchUserReplies(accountId);
+  } else {
+    result = await fetchUserSaved(accountId);
   }
 
   if (!result) redirect("/");
