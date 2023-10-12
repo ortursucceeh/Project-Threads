@@ -38,6 +38,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
               createdAt={parentThread.createdAt}
               comments={parentThread.children}
               likes={parentThread.likes}
+              isSaved={JSON.parse(JSON.stringify(userInfo.saved))
+                .map((thread: any) => thread._id)
+                ?.includes(thread._id.toString())}
             />
           </div>
           <div className="thread-card_bar "></div>
@@ -61,6 +64,9 @@ const Page = async ({ params }: { params: { id: string } }) => {
           createdAt={thread.createdAt}
           comments={thread.children}
           likes={thread.likes}
+          isSaved={JSON.parse(JSON.stringify(userInfo.saved))
+            .map((thread: any) => thread._id)
+            ?.includes(thread._id.toString())}
         />
       </div>
 

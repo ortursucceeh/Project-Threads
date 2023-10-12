@@ -151,13 +151,6 @@ const ThreadCard = ({
                     type="bookmark"
                     pathname={pathname!}
                   />
-                  // <Image
-                  //   src="/assets/bookmark.svg"
-                  //   alt="share"
-                  //   width={24}
-                  //   height={24}
-                  //   className="object-contain cursor-pointer"
-                  // />
                 )}
               </div>
             </div>

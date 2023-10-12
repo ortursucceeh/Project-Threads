@@ -243,16 +243,22 @@ export async function fetchUserSaved(userId: string) {
 
   try {
     const user = await User.findOne({ id: userId });
-    // console.log("user :>> ", user);
     const saved = await Thread.find({ _id: { $in: user.saved } })
       .populate({
         path: "author",
         model: User,
         select: "name image _id id",
       })
+      .populate({
+        path: "children",
+        model: Thread,
+        populate: {
+          path: "author",
+          model: User,
+          select: "name image id",
+        },
+      })
       .exec();
-
-    // console.log("replies :>> ", replies);
 
     return {
       threads: saved,

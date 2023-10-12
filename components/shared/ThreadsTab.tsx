@@ -66,7 +66,7 @@ const ThreadsTab = async ({
           isSaved={userSaves
             .map((thread) => thread._id)
             ?.includes(thread._id.toString())}
-          isComment={tabType === "replies" ? true : false}
+          isComment={tabType === "replies" ? true : false || thread.parentId}
         />
       ))}
     </section>
